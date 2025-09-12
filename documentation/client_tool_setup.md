@@ -6,7 +6,7 @@
   - Example: Using WSL but running Burp outside of WSL (on the host) can result in network communication issues
   - It is recommended to run everything from inside your WSL or VM
 
-## Environment Setup
+### Environment Setup
 
 ```shell
 export https_proxy=http://localhost:8080
@@ -16,9 +16,9 @@ gcloud config set auth/disable_ssl_validation  True
 
 For an alternative gcloud CA trust store setup see https://github.com/rbeede/pen-testing-cloud-apis/blob/main/documentation/client_setup/Burp_linux.md
 
-## Verify Clients Work
+### Verify Clients Work
 
-### OpenStack Swift
+#### OpenStack Swift
 
 ```shell
 swift --insecure --auth=https://localhost:8888/auth/v1.0 -U system:root -K testpass --verbose stat
@@ -26,7 +26,7 @@ swift --insecure --auth=https://localhost:8888/auth/v1.0 -U system:root -K testp
 
 You should see two requests in your proxy.
 
-### Google Cloud (CAZT)
+#### Google Cloud (CAZT)
 
 ```shell
 gcloud cazt create \
@@ -42,12 +42,12 @@ gcloud cazt list \
     --format json
 ```
 
-### PaaS Cloud Goat (Salesforce)
+#### PaaS Cloud Goat (Salesforce)
 
 Starting your web browser from the terminal it should pickup the https_proxy variable. If not, ensure that your browser is sending traffic to your proxy. Note that it is technically possible to solve the lab exercises with just the web browser developer tools, but most people prefer using the proxy tool.
 
 ---
 
-### Next
+## Next
 
 [Sample Exercises](exercises.md)
