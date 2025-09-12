@@ -1,4 +1,4 @@
-# Software Configuration of Tools
+# Software Configuration of Simulator Tools
 
 > ℹ️ This documentation assumes that the necessary Git repositories of tools have already been cloned/unzipped into the current directory. In a few cases `sudo` privileges will be required, but most commands do not require it.
 
@@ -184,3 +184,17 @@ gcloud cazt run-activity \
 	--format json \
 	--arn=arn:cloud:cazt:us-texas-9:000000001111:MyMoggy
 ```
+
+---
+
+### PaaS Cloud Goat
+
+This requires that you already have a Salesforce Developer Edition account.
+
+Following the instructions at https://github.com/rbeede/paas-cloud-goat/blob/main/Documentation/INSTALL.md
+
+---
+
+## Next
+
+[Client Tools Setup](client_tool_setup.md)
