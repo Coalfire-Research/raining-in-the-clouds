@@ -20,7 +20,7 @@ This material includes a self-guided walkthrough of how to setup the tools and c
 
 ## Where to start
 
-### Software Setup
+### Software Requirements
 
 1. A Linux platform to run the tools on is needed
    - A VM desktop guest is fine for this
@@ -33,7 +33,7 @@ This material includes a self-guided walkthrough of how to setup the tools and c
    1. https://github.com/rbeede/pen-testing-cloud-apis
    1. https://github.com/Coalfire-Research/cazt
    1. https://github.com/rbeede/paas-cloud-goat
-1. Install required software
+1. Install required dependency software
    1. [gCloud GLI](https://cloud.google.com/sdk/docs/install)
       - Warning: This can take a long time to install via the Debian/Ubuntu method
       - You may find the Linux tar.gz much faster, but make sure to add it to your $PATH
@@ -59,4 +59,8 @@ Recommend opening in a new tab so you can return to this guide.
   - [Cross-site Scriptiong (XSS)](https://github.com/rbeede/pen-testing-cloud-apis/blob/main/documentation/study_material/xss.md)
   - [Injection](https://github.com/rbeede/pen-testing-cloud-apis/blob/main/documentation/study_material/injection.md)
 
-- []()
+---
+
+## Next Step
+
+[Software Configuration](documentation/configuration.md)
