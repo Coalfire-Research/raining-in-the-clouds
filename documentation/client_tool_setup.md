@@ -14,6 +14,8 @@ export https_proxy=http://localhost:8080
 gcloud config set auth/disable_ssl_validation  True
 ```
 
+For an alternative gcloud CA trust store setup see https://github.com/rbeede/pen-testing-cloud-apis/blob/main/documentation/client_setup/Burp_linux.md
+
 ## Verify Clients Work
 
 ### OpenStack Swift
