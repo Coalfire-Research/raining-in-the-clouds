@@ -52,15 +52,19 @@ swift --insecure --auth=https://localhost:8888/auth/v1.0 -U system:root -K testp
 
 ```
 
+##### Reset all existing data, if any
+
 ```shell
 swift --insecure -A https://localhost:8888/auth/v1.0 -U system:root -K testpass delete fileuploads
 
 swift --insecure -A https://localhost:8888/auth/v1.0 -U account1:normal -K expected delete deptdocs
 
-swift --insecure -A https://localhost}:8888/auth/v1.0 -U account2:somebody -K else delete research 
+swift --insecure -A https://localhost:8888/auth/v1.0 -U account2:somebody -K else delete research 
 
 swift --insecure -A https://localhost:8888/auth/v1.0 -U codeerror:unexpecteduser -K shouldnothappen delete warez
 ```
+
+##### Recreate test data
 
 ```shell
 cd openstack-demo/demo-testdata/
