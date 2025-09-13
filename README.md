@@ -17,17 +17,17 @@ This material includes a self-guided walkthrough of how to setup the tools and c
 1. Working knowledge of OWASP Top 10 fundamentals
 1. Basic skill with Linux CLI
 1. Skill with HTTP MitM tools such as Burp Suite
+1. For Salesforce exercises a [Salesforce Developer Edition account](https://developer.salesforce.com/developer-legacy/signup)
 
 ## Where to start
 
 ### Software Requirements
 
-1. A Linux platform to run the tools on is needed
+1. A Linux platform
    - A VM desktop guest is fine for this
-     - This guide will use WSL2 (Hyper-V), but other hypervisors that can run a Linux VM are sufficient
+     - This guide will use WSL2 (Hyper-V), but other hypervisors that can run a Linux VM can also be used
    - Ubuntu 24.04 (both x86_64 and ARM) have been tested to work
 1. An HTTP MitM proxy
-   - Burp Suite Community of Professional works
    - No specific software requirement, but this guide uses Burp Suite
 1. Obtain copies of the following Git repos
    1. https://github.com/rbeede/pen-testing-cloud-apis
@@ -40,7 +40,7 @@ This material includes a self-guided walkthrough of how to setup the tools and c
    1. Python 3.12.3 (should come with Ubuntu 24.04)
      - Later versions are okay, but may require some manual workarounds
    1. [Salesforce CLI](https://developer.salesforce.com/tools/salesforcecli)
-   1. OpenStack Swift server & client (instructions given later)
+   1. OpenStack Swift server & client (install instructions given later)
 
 ### Education Material
 
