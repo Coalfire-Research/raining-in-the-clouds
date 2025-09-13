@@ -183,7 +183,7 @@ In this case the software bug in the API was that the policy authorization rules
 
 Identity and access management (IAM) controls include policies that define permissions defined by the customer/client/tenant owner. An expectation is that only the permissions the tenant chose to grant would permit access to their account data or resources.
 
-The cloud (or service) provider must also ensure that their systems correctly interpret both the policy documents, the inputs coming into an API, and whether the caller (tenant) was granted access. This applies for whether the caller is a member of the same tenant account or belongs to another tenant account.
+The cloud (or service) provider must also ensure that their systems correctly interpret the policy documents, the inputs coming into an API, and whether the caller (tenant) was granted access. This applies for whether the caller is a member of the same tenant account or belongs to another tenant account.
 
 ### Baseline Start (QA)
 
@@ -197,7 +197,7 @@ gcloud cazt get \
     --name=NotMyMoggy
 ```
 
-For cloud APIs you will either observe an unauthorized response or a response that the item was not found (because it looked in your own account which did not have it). In this case we notice that NotMyMoggy was created in the tenant account `000000002222` but the caller's credentials are only for account `123456789012`.
+For cloud APIs you will either observe an unauthorized response or a response that the item was not found (because it looked only in your own account which did not have it). In this case we notice that NotMyMoggy was created in the tenant account `000000002222` but the caller's credentials are only for account `123456789012`.
 
 ℹ️ If you need to reset the sample data see [CAZT - Populate sample data](configuration.md#populate-sample-data)
 
@@ -211,7 +211,11 @@ Note:
    1. The attacker has only their own credentials, not anothers
    1. Do not change the HTTP authentication header either
 
-You will see in a psuedo-IAM policy that it uses a resource identifier that is longer than just a short id. The long-form of a resource ID looks like `arn:cloud:cazt:REGION:ACCOUNTID:SomeResourceNameOnly` or `//iam.googleapis.com/projects/PROJECT_ID/serviceAccounts/SERVICE_ACCOUNT_EMAIL` or `/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM` (it varies by the cloud provider).
+You will see in the psuedo-IAM policy that it used a resource identifier that is longer than just a short id. The long-form of a resource ID can look like:
+- `arn:cloud:cazt:REGION:ACCOUNTID:SomeResourceNameOnly`
+- `//iam.googleapis.com/projects/PROJECT_ID/serviceAccounts/SERVICE_ACCOUNT_EMAIL`
+- `/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM`
+- _it varies by the cloud provider_
 
 ##### Goal
 
@@ -230,7 +234,7 @@ The end goal is to call the GetMoggy API from the attacker's  `--account=cazt_sc
 
 1. You may assume that the attacker has knowledge of any API resource nomenclature (ARNs) or resource names belonging to the target victim.
    1. IDs are not secrets nor should knowledge of the ID be the only access control
-1. The attacker would configure their own tenant account calling user with administrator (or * wildcard) permissions
+1. The attacker configures their own tenant account client with administrator (or * wildcard) permissions
    1. The attacker does not have any permissions granted by the target victim
    1. The attacker does control their own account so they would grant themselves (in their own tenant account) full admin
    1. This ensure that if the cloud service checks the caller's permissions to the API action only (but not the target resource input) it would not be blocked prematurely
@@ -250,11 +254,35 @@ The end goal is to call the GetMoggy API from the attacker's  `--account=cazt_sc
 ##### Solution
 
 ```http
-TODO add example
+POST /uat/getMoggy HTTP/1.1
+Host: cazt.gcloud.localtest.me:8443
+user-agent: google-cloud-sdk gcloud/538.0.0 command/gcloud.cazt.get invocation-id/333a8c9144f44328a57c128fbd6bda1c environment/None environment-version/None client-os/LINUX client-os-ver/6.6.87 client-pltf-arch/x86_64 interactive/True from-script/False python/3.12.10 term/xterm-256color (Linux 6.6.87.2-microsoft-standard-WSL2)
+Accept-Encoding: gzip, deflate, br
+Accept: */*
+Connection: keep-alive
+Authorization: Bearer Y2F6dF9zY2VuMl9jcm9zcy10ZW5hbnRAMTIzNDU2Nzg5MDEy
+Content-Length: 61
+Content-Type: application/json
+
+{"Name": "arn:cloud:cazt:us-texas-9:000000002222:NotMyMoggy"}
 ```
 
+Observe that the call was made from a user in account 123456789012, but the returned resource belonged to account 000000002222.
+
 ```http
-TODO add example
+HTTP/1.1 200 OK
+Server: BaseHTTP/0.6 Python/3.12.3
+Date: Sat, 13 Sep 2025 17:29:09 GMT
+Content-Type: application/json
+Content-Length: 214
+
+{
+     "Arn": "arn:cloud:cazt:us-texas-9:000000002222:NotMyMoggy",
+     "Description": null,
+     "CreatedAt": 1757781273,
+     "ActivityLogObjectStorage": "moggylitterbox-000000002222",
+     "Name": "NotMyMoggy"
+}
 ```
 
 In this case the API software bug was that it assumed only the short-form which it resolved as a relative alias to the full-length identifier. When supplied with an already resolved identifier it did not perform any resolution against the caller's account ID but just trusted the value given.
