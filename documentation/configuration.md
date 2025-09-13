@@ -157,6 +157,7 @@ gcloud cazt --help
 popd
 ```
 
+##### Populate sample data
 In another terminal verify the simulator is functional and populate with sample data:
 
 ```shell
