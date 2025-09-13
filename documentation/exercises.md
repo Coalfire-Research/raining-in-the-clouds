@@ -11,7 +11,7 @@ Each exercise assumes that you have already setup the simulator servers and the 
 
 ![image](xss-exercise-sample-screenshot.png)
 
-From a web browser (connect to your HTTP MitM Proxy, Burp) navigate to:
+From a web browser (connected with your HTTP MitM Proxy, Burp) navigate to:
 > `http://localhost:9080/REST/API/endpoint.cgi`
 
 Observe that the page renders a listing of files store in a backend OpenStack Swift (Object Storage). In the first release for customers they could use the upload functionality of this page to upload files to the server for storage.
