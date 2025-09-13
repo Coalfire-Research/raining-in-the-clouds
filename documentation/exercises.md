@@ -270,7 +270,7 @@ In the PaaS Cloud Goat "welcome" tab navigate to the "Encrypted Field" page
 
 Navigate to the page "SOQL Injection - Variant 3" which will simulate a SOQL vulnerability in the application. Execute the default query and observe the request + response in your HTTP MitM proxy (Burp).
 
-```http
+```
 POST /apex/SOQLInjection3?isdtp=p1&sfdcIFrameOrigin=https://na-personal-dev-ed.develop.lightning.force.com HTTP/2
 Host: na-personal-dev-ed--c.develop.vf.force.com
 Cookie: ...REDACTED...
@@ -295,7 +295,7 @@ j_id0%3Aj_id35%3Aj_id36%3Aj_id37%3Aj_id39=j_id0%3Aj_id35%3Aj_id36%3Aj_id37%3Aj_i
 ...REDACTED...
 ```
 
-```http
+```
 HTTP/2 200 OK
 Date: Sat, 13 Sep 2025 15:02:22 GMT
 Content-Type: text/html;charset=UTF-8
@@ -318,7 +318,7 @@ Content-Type: text/html;charset=UTF-8
 
 The part of the request that you are interested in is the `&j_id0%3Aj_id35%3Aj_id36%3Aj_id37%3Aj_id39%3Aj_id43`. The input parameter name and path were assembled by the service framework for the developer. If you look at the Apex API controller itself it uses more friendly names such as `query`. If you know the Apex controller APIs parameter names you could use those as well:
 
-```http
+```
 query=SELECT+id%2Cownerid%2Cisdeleted%2Cname%2Ccreateddate%2Ccreatedbyid%2Clastmodifieddate%2Clastmodifiedbyid%2Csystemmodstamp%2Clastvieweddate%2Clastreferenceddate%2Centrypin__c+FROM+Building__c&querySOQL=Submit
 ```
 
