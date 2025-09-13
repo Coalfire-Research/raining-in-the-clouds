@@ -47,7 +47,7 @@ This material includes a self-guided walkthrough of how to setup the tools and c
 Recommend opening in a new tab so you can return to this guide.
 
 - Why Pentest Cloud APIs
-  - [Juniper Support Portal Exposed Customer Device Info; 2024]()
+  - [Juniper Support Portal Exposed Customer Device Info; 2024](https://krebsonsecurity.com/2024/02/juniper-support-portal-exposed-customer-device-info/)
   - [Salesforce Community Cloud data leaks shine light on misconfigurations; 2023](https://www.scworld.com/news/salesforce-community-cloud-data-leaks-misconfigurations)
   - [Salesforce Security Alert: API Error Exposed Marketing Data; 2018](https://www.bankinfosecurity.com/salesforce-security-alert-api-error-exposed-marketing-data-a-11278)
   - [A critical vulnerability was found in Google Security Operations SOAR; GCP-2025-049; 2025](https://cloud.google.com/support/bulletins#gcp-2025-049)
