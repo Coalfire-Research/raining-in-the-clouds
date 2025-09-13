@@ -39,9 +39,9 @@ We start by only performing legitimate, expected behaviors (i.e. inputs) of the 
 ```shell
 echo $USER > sample_object.txt
 
-swift --insecure -A https://localhost:8080/auth/v1.0 -U system:root -K testpass upload fileuploads ./sample_object.txt
+swift --insecure -A https://localhost:8888/auth/v1.0 -U system:root -K testpass upload fileuploads ./sample_object.txt
 
-swift --insecure -A https://localhost:8080/auth/v1.0 -U system:root -K testpass upload fileuploads /etc/os-release
+swift --insecure -A https://localhost:8888/auth/v1.0 -U system:root -K testpass upload fileuploads /etc/os-release
 ```
 
 Observe on the application website (GUI) that the file uploads now appear.
@@ -53,7 +53,7 @@ You can also observe the traffic in your HTTP MitM proxy (Burp). You will notice
 We observed previously that uploading files via the web browser (HTML/HTTP form upload) resulted in strict validation of the permitted filenames. Is that the case with the standard SDK of the OpenStack REST API?
 
 ```shell
-swift --insecure -A https://${LAB_OPENSTACK_IP}:8080/auth/v1.0 -U system:root -K testpass copy fileuploads sample_object.txt -d '/fileuploads/easytest<script>alert("you been pwned")</script>forme'
+swift --insecure -A https://localhost:8888/auth/v1.0 -U system:root -K testpass copy fileuploads sample_object.txt -d '/fileuploads/easytest<script>alert("you been pwned")</script>forme'
 ```
 
 Now observe the web UI result. You should see a simple (persistent) XSS payload execute.
