@@ -336,7 +336,7 @@ The end goal is to retrieve the clear-text values of the encrypted fields.
 
 Modify the injectable SOQL query for the API /apex/SOQLInjection3.
 
-We are interested in obtaining the encrypted field `Ingredient` from the `Secret Sauce` object. Since these are custom objects in Salesforce they will require appending `__c` to get their data schema names.
+We are interested in obtaining the encrypted field Ingredient from the `Secret Sauce` object. Since these are custom objects in Salesforce they will require appending `__c` to get their data schema names.
 
 Take our original, unencoded query that retrieved information about buildings:
 ```sql
@@ -349,7 +349,7 @@ To validate if we've guessed or used the correct object schema name we use well 
 SELECT id FROM SecretSauce__c
 ```
 
-Re-encode the query and submit it to the service. If you get the results you know you have a valid query. Otherwise you may get an error page or an empty page.
+Re-encode the query and submit it to the service. If you get results you know you have a valid query. Otherwise you may get an error page or an empty page.
 
 ##### Solution
 
