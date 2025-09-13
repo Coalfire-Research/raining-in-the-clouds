@@ -2,7 +2,7 @@
 
 - You repeat these steps anytime you open a new terminal.
 - It is assumed that you have your HTTP MitM proxy tool (i.e. Burp Suite) already running.
-- Be aware that if you are attempting to run Burp/clients outside of where the simualted servers are running or on a different VM then you may need to bind Burp to a different network interface
+- Be aware that if you are attempting to run Burp/clients outside of where the simulation servers are running or on a different VM then you may need to bind Burp to a different network interface
   - Example: Using WSL but running Burp outside of WSL (on the host) can result in network communication issues
   - It is recommended to run everything from inside your WSL or VM
 
