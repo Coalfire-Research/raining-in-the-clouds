@@ -250,7 +250,7 @@ In this case the API software bug was that it assumed only the short-form which 
   - https://github.com/Coalfire-Research/paas-cloud-goat
 - You should be logged in using the standard user profile role
 - Your web browser should already be connected to your HTTP MitM proxy (Burp)
-- The PaaS Cloud Goat has helpful documentation on the lab exercise pages as well
+- The PaaS Cloud Goat applciation has helpful documentation in the lab exercise pages as well
 
 ### Baseline Start (QA)
 
