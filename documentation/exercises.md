@@ -13,8 +13,9 @@ Each exercise assumes that you have already setup the simulator servers and the 
 
 From a web browser (connected with your HTTP MitM Proxy, Burp) navigate to:
 > `http://localhost:9080/REST/API/endpoint.cgi`
+- If you are using Firefox and your requests are not showing up in Burp try a URL like `http://localtest.me:9080/REST/API/endpoint.cgi`
 
-Observe that the page renders a listing of files store in a backend OpenStack Swift (Object Storage). In the first release for customers they could use the upload functionality of this page to upload files to the server for storage.
+Observe that the page renders a listing of files stored in a backend OpenStack Swift (Object Storage). In the first release for customers they could use the upload functionality of this page to upload files to the server for storage.
 
 Observe that if you attempt to upload a file with a filename that does not comply to the restrictions that you are blocked. Feel free to try repeating a few malicious payloads via Burp in an attempt to inject XSS on the list page. During the first pen test the service was not found vulnerable to XSS.
 
