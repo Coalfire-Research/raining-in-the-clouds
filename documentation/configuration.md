@@ -162,7 +162,7 @@ popd
 ```
 
 ##### Populate sample data
-In another terminal verify the simulator is functional and populate with sample data:
+Verify the simulator is functional and populate with sample data:
 
 ```shell
 # There is an optional way to trust the HTTP MitM (Burp) CA. Reference the cazt git repo for details.
