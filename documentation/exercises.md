@@ -411,4 +411,16 @@ SELECT id,name,SecretIngredient__c FROM SecretSauce__c
 
 We observe that even though the user did not have permission to the encrypted field the injection vulnerability allowed us to access the clear-text data.
 
+One question is, how did we know the attribute name was SecretIngredient__c?
+- __c because it was a custom object (not one of few Salesforce built-in)
+- Ingredient we could guess from the column name on the "Encrypted Field" UI page
+- Guessing
+  - `Ingredient__c` would be a good first attempt
+  - Attempting other word variants
+- Not having to guess
+  - If you have source code access that makes it easy
+  - Without source code access try opening the details of a specific item
+    - View the page source to look for JSON or HTML values containing __c
+    - You will likely find the human readable attribute name here
+
 </details>
