@@ -183,7 +183,7 @@ In this case the software bug in the API was that the policy authorization rules
 
 Identity and access management (IAM) controls include policies that define permissions defined by the customer/client/tenant owner. An expectation is that only the permissions the tenant chose to grant would permit access to their account data or resources.
 
-The cloud (or service) provider must also ensure that their systems correctly interept both the policy documents, the inputs coming into an API, and whether the caller (tenant) was granted access. This applies for whether the caller is a member of the same tenant account or belongs to another tenant account.
+The cloud (or service) provider must also ensure that their systems correctly interpret both the policy documents, the inputs coming into an API, and whether the caller (tenant) was granted access. This applies for whether the caller is a member of the same tenant account or belongs to another tenant account.
 
 ### Baseline Start (QA)
 
