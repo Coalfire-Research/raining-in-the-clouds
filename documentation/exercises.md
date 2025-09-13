@@ -150,3 +150,93 @@ In this case the software bug in the API was that the policy authorization rules
 </details>
 
 ---
+
+<details>
+<summary>Authorization Bypass - IDOR / Confused Deputy</summary>
+
+### Useful concepts
+
+- Exercise scenario details
+  - https://github.com/Coalfire-Research/cazt/blob/main/documentation/lab_manual/scenarios/02-cross_tenant.md
+
+Identity and access management (IAM) controls include policies that define permissions defined by the customer/client/tenant owner. An expectation is that only the permissions the tenant chose to grant would permit access to their account data or resources.
+
+The cloud (or service) provider must also ensure that their systems correctly interept both the policy documents, the inputs coming into an API, and whether the caller (tenant) was granted access. This applies for whether the caller is a member of the same tenant account or belongs to another tenant account.
+
+### Baseline Start (QA)
+
+From a terminal (connected to your proxy) run the following baseline (QA) command to verify that the service's API is working as expected:
+
+```shell
+gcloud cazt get \
+    --api-endpoint-overrides=https://cazt.gcloud.localtest.me:8443/uat \
+    --account=cazt_scen2_cross-tenant@123456789012 \
+    --format json \
+    --name=NotMyMoggy
+```
+
+For cloud APIs you will either observe an unauthorized response or a response that the item was not found (because it looked in your own account which did not have it). In this case we notice that NotMyMoggy was created in the tenant account `000000002222` but the caller's credentials are only for account `123456789012`.
+
+ℹ️ If you need to reset the sample data see [CAZT - Populate sample data](configuration.md#populate-sample-data)
+
+### Malicious Input Injection
+
+In your HTTP MitM proxy (Burp) review your previous get API call.
+
+Note:
+1. You must not change the `--account` value
+   1. The attack is against authori**z**ation, not the authentication
+   1. The attacker has only their own credentials, not anothers
+   1. Do not change the HTTP authentication header either
+
+You will see in a psuedo-IAM policy that it uses a resource identifier that is longer than just a short id. The long-form of a resource ID looks like `arn:cloud:cazt:REGION:ACCOUNTID:SomeResourceNameOnly` or `//iam.googleapis.com/projects/PROJECT_ID/serviceAccounts/SERVICE_ACCOUNT_EMAIL` or `/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM` (it varies by the cloud provider).
+
+##### Goal
+
+The end goal is to call the GetMoggy API from the attacker's  `--account=cazt_scen2_cross-tenant@123456789012` to get the resource that belongs to the victim in account `000000002222`.
+
+```json
+{
+  "ActivityLogObjectStorage": "moggylitterbox-000000002222",
+  "CreatedAt": 1751213493,
+  "Description": null,
+  "Name": "NotMyMoggy"
+}
+```
+
+##### Attack Methodologies
+
+1. You may assume that the attacker has knowledge of any API resource nomenclature (ARNs) or resource names belonging to the target victim.
+   1. IDs are not secrets nor should knowledge of the ID be the only access control
+1. The attacker would configure their own tenant account calling user with administrator (or * wildcard) permissions
+   1. The attacker does not have any permissions granted by the target victim
+   1. The attacker does control their own account so they would grant themselves (in their own tenant account) full admin
+   1. This ensure that if the cloud service checks the caller's permissions to the API action only (but not the target resource input) it would not be blocked prematurely
+1. Identify the input to attack
+   - In this case "name"
+1. Attempt fuzzing of the input value
+   - Encode some characters with URL character encoding escapes
+   - Try adding extra spaces at the beginning or end
+   - Duplicate the key+value in the JSON
+   - Change the value from a single string to an array of values
+     - Which value is used for authorization versus the business logic?
+   - Are the key names or values case sensitive?
+1. Are there alternative aliases or conventions for defining the identifier?
+   - MyShortID
+   - arn:cloud:cazt:REGION:ACCOUNTID:MyShortID
+
+##### Solution
+
+```http
+TODO add example
+```
+
+```http
+TODO add example
+```
+
+In this case the API software bug was that it assumed only the short-form which it resolved as a relative alias to the full-length identifier. When supplied with an already resolved identifier it did not perform any resolution against the caller's account ID but just trusted the value given.
+
+</details>
+
+---
