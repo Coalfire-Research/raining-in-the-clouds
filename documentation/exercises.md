@@ -77,7 +77,7 @@ Identity and access management (IAM) controls include policies that define permi
 
 A configuration mistake in a policy by the client/customer/tenant can result in unauthorized access to data or the ability to use the service in unwanted ways. This typically falls on the customer-shared responsiblity.
 
-However, the cloud (or service) provider must also ensure that their systems correctly interept both the policy documents and how it is applied to the user inputs. Failure to do so could result in unauthorized access to the tenant's data or privilege escalation.
+However, the cloud (or service) provider must also ensure that their systems correctly interpret both the policy documents and how it is applied to the user inputs. Failure to do so could result in unauthorized access to the tenant's data or privilege escalation.
 
 ### Baseline Start (QA)
 
@@ -102,9 +102,9 @@ Attempt the following API REST call:
 ```shell
 gcloud cazt pet-sitter \
     --api-endpoint-overrides=https://cazt.gcloud.localtest.me:8443/uat \
-    --account=cazt_scen7_impersonation@00000000111 \
+    --account=cazt_scen7_impersonation@000000001111 \
     --format json \
-    --arn=arn:cloud:iam:us-texas-9:00000000111:FullAdmin
+    --arn=arn:cloud:iam:us-texas-9:000000001111:FullAdmin
 ```
 
 Note:
@@ -120,7 +120,7 @@ Note:
 The goal is to get a success response like the following:
 ```json
 {
-  "Message": "00000000111 using impersonation arn:cloud:iam:us-texas-9:00000000111:FullAdmin"
+  "Message": "000000001111 using impersonation arn:cloud:iam:us-texas-9:000000001111:FullAdmin"
 }
 ```
 
