@@ -14,9 +14,9 @@ This material includes a self-guided walkthrough of how to setup the tools and c
 
 ## Prerequisites
 
-1. You have basic knowledge of OWASP Top 10 fundamentals
-1. You have basic skill with Linux CLI
-1. You have basic skill with HTTP MitM tools such as Burp Suite
+1. Working knowledge of OWASP Top 10 fundamentals
+1. Basic skill with Linux CLI
+1. Skill with HTTP MitM tools such as Burp Suite
 
 ## Where to start
 
