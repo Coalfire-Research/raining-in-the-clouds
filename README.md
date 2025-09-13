@@ -2,7 +2,7 @@
 
 <img src="images/logo_careof_Copilot_20250908_170039.png" width="25%">
 
-A collection of tools that simluate cloud REST API vulnerabilities. The tools provide training for practical skill development based on real-world vulnerabilities in authorization, XSS, and SQL injection. Coverage includes OpenStack, Salesforce, and Google Cloud.
+A collection of tools that simulate cloud REST API vulnerabilities. The tools provide training for practical skill development based on real-world vulnerabilities in authorization, XSS, and SQL injection. Coverage includes OpenStack, Salesforce, and Google Cloud.
 
 ---
 
