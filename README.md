@@ -37,6 +37,7 @@ This material includes a self-guided walkthrough of how to setup the tools and c
    1. [gCloud GLI](https://cloud.google.com/sdk/docs/install)
       - Warning: This can take a long time to install via the Debian/Ubuntu method
       - You may find the Linux tar.gz much faster, but make sure to add it to your $PATH
+      - ⚠️⚠️Do **not** use the snap version as it forces readonly file systems that break the simulation tools
    1. Python 3.12.3 (should come with Ubuntu 24.04)
       - Later versions are okay, but may require some manual workarounds
    1. [Salesforce CLI](https://developer.salesforce.com/tools/salesforcecli)
