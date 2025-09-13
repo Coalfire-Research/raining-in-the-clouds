@@ -30,6 +30,7 @@ Our subsequent pen test will uncover that an attacker can bypass the filename ch
    - https://docs.openstack.org/ocata/cli-reference/swift.html
 1. Observe: Object Storage != Filesystem Storage nor the same limitations
    - https://docs.openstack.org/api-ref/object-store/index.html#objects
+   - https://docs.openstack.org/swift/latest/api/object_api_v1_overview.html
 
 ### Baseline Start (QA)
 
